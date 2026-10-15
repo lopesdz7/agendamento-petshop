@@ -123,6 +123,7 @@
 
   .new-appointment {
     position: static;
+    min-height: var(--control-height);
     margin: 0;
     box-shadow: none;
   }

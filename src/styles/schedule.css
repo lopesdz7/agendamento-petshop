@@ -81,6 +81,7 @@
 
 /* ------------------------------- Agendamento -------------------------------- */
 .appointment {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
@@ -94,8 +95,15 @@
   transition: background-color var(--duration-fast);
 }
 
-.appointment + .appointment {
-  border-top: 1px solid var(--color-border);
+/* Divisor reto entre linhas, recuado das bordas arredondadas */
+.appointment + .appointment::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--space-3);
+  right: var(--space-3);
+  height: 1px;
+  background: var(--color-border);
 }
 
 .appointment:hover,
@@ -103,9 +111,11 @@
   background: var(--color-surface-hover);
 }
 
-.appointment:hover + .appointment,
-.appointment:focus-within + .appointment {
-  border-top-color: transparent;
+.appointment:hover::before,
+.appointment:focus-within::before,
+.appointment:hover + .appointment::before,
+.appointment:focus-within + .appointment::before {
+  opacity: 0;
 }
 
 .appointment__time {
