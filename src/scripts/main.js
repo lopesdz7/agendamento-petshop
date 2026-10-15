@@ -1,4 +1,6 @@
-import { removeAppointment, seedAppointments } from "./storage.js";
+import { createAppointmentForm } from "./form.js";
+import { createModal } from "./modal.js";
+import { addAppointment, removeAppointment, seedAppointments } from "./storage.js";
 import { animateRemoval, renderSchedule } from "./schedule.js";
 import { formatLongDate, getTodayISO, isValidISODate } from "./utils.js";
 
@@ -6,6 +8,9 @@ const scheduleContainer = document.querySelector("#schedule");
 const scheduleDateInput = document.querySelector("#schedule-date");
 const scheduleSubtitle = document.querySelector("#schedule-subtitle");
 const announcer = document.querySelector("#announcer");
+const openModalButton = document.querySelector("#open-modal");
+const modalElement = document.querySelector("#appointment-modal");
+const formElement = document.querySelector("#appointment-form");
 
 const state = { date: getTodayISO() };
 
@@ -34,19 +39,21 @@ function updateSubtitle() {
     : `Aqui você pode ver todos os clientes e serviços agendados para ${formatLongDate(state.date)}.`;
 }
 
-export function setScheduleDate(date, options) {
+function setScheduleDate(date, options) {
   state.date = date;
   scheduleDateInput.value = date;
   updateSubtitle();
   renderSchedule(scheduleContainer, state.date, options);
 }
 
+/* ------------------------------ Data do topo ------------------------------ */
 scheduleDateInput.addEventListener("change", () => {
   const { value } = scheduleDateInput;
   // Campo apagado ou inválido: volta para a data que estava sendo exibida.
   setScheduleDate(isValidISODate(value) ? value : state.date);
 });
 
+/* -------------------------------- Remoção --------------------------------- */
 scheduleContainer.addEventListener("click", async (event) => {
   const button = event.target.closest('[data-action="remove"]');
   if (!button) return;
@@ -66,5 +73,30 @@ scheduleContainer.addEventListener("click", async (event) => {
   nextFocus.focus();
 });
 
+/* ---------------------------- Modal e formulário --------------------------- */
+const modal = createModal(modalElement, {
+  initialFocus: "#tutor",
+  onClose: () => appointmentForm.clearErrors(),
+});
+
+const appointmentForm = createAppointmentForm(formElement, {
+  onSubmit(values) {
+    const result = addAppointment(values);
+    if (!result.ok) return result;
+
+    modal.close();
+    appointmentForm.reset();
+    setScheduleDate(values.date, { highlightId: result.appointment.id });
+    announce(`Agendamento de ${values.pet} às ${values.time} criado.`);
+    return result;
+  },
+});
+
+openModalButton.addEventListener("click", () => {
+  appointmentForm.prepare(state.date);
+  modal.open();
+});
+
+/* ---------------------------------- Início --------------------------------- */
 seedAppointments(createSampleAppointments);
 setScheduleDate(state.date);
