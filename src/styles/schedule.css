@@ -1,0 +1,243 @@
+.schedule {
+  display: grid;
+  gap: var(--space-4);
+  /* Espaço para o botão fixo no mobile */
+  padding-bottom: calc(var(--space-12) + var(--space-12));
+}
+
+@media (min-width: 768px) {
+  .schedule {
+    gap: var(--space-5);
+    padding-bottom: var(--space-12);
+  }
+}
+
+/* ------------------------------ Seção (período) ----------------------------- */
+.period {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.period__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.period__icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  --icon-size: 1.125rem;
+}
+
+.period__title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.period__range {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.period__count {
+  display: grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.period__count:empty {
+  display: none;
+}
+
+.period__list {
+  padding: var(--space-2);
+}
+
+.period__empty {
+  padding: var(--space-5) var(--space-3);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* ------------------------------- Agendamento -------------------------------- */
+.appointment {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "time client remove"
+    "time service remove";
+  align-items: center;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  transition: background-color var(--duration-fast);
+}
+
+.appointment + .appointment {
+  border-top: 1px solid var(--color-border);
+}
+
+.appointment:hover,
+.appointment:focus-within {
+  background: var(--color-surface-hover);
+}
+
+.appointment:hover + .appointment,
+.appointment:focus-within + .appointment {
+  border-top-color: transparent;
+}
+
+.appointment__time {
+  grid-area: time;
+  align-self: start;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.appointment__client {
+  grid-area: client;
+  min-width: 0;
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.appointment__pet {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.appointment__separator,
+.appointment__tutor {
+  color: var(--color-text-muted);
+}
+
+.appointment__service {
+  grid-area: service;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.appointment__remove {
+  grid-area: remove;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  --icon-size: 1.125rem;
+  transition: color var(--duration-fast), background-color var(--duration-fast);
+}
+
+.appointment__remove:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+.appointment__remove:focus-visible {
+  outline: none;
+  color: var(--color-danger);
+  box-shadow: var(--focus-ring);
+}
+
+/* No mobile, só o ícone (o aria-label descreve a ação) */
+.appointment__remove-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .period__header {
+    padding: var(--space-4) var(--space-6);
+  }
+
+  .period__list {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .appointment {
+    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1.4fr) auto;
+    grid-template-areas: "time client service remove";
+    padding: var(--space-3) var(--space-3);
+  }
+
+  .appointment__time {
+    align-self: center;
+    justify-self: start;
+  }
+
+  .appointment__remove-label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+}
+
+/* -------------------------------- Animações --------------------------------- */
+.appointment.is-entering {
+  animation: appointment-enter 420ms var(--ease-out);
+}
+
+.appointment.is-leaving {
+  animation: appointment-leave var(--duration-base) ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes appointment-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+    background: var(--color-accent-soft);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes appointment-leave {
+  to {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
