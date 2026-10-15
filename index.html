@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Agenda de atendimentos do pet shop Mundo Pet." />
+    <meta name="theme-color" content="#131216" />
+    <title>Mundo Pet | Agenda</title>
+    <link rel="icon" type="image/svg+xml" href="./src/assets/icons/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./src/styles/global.css" />
+    <link rel="stylesheet" href="./src/styles/header.css" />
+    <link rel="stylesheet" href="./src/styles/schedule.css" />
+    <link rel="stylesheet" href="./src/styles/modal.css" />
+
+    <script type="module" src="./src/scripts/main.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header__bar">
+        <a class="brand" href="./" aria-label="Mundo Pet, página inicial">
+          <span class="brand__mark" aria-hidden="true">
+            <span class="icon icon--paw"></span>
+          </span>
+          <span class="brand__name">Mundo<strong>Pet</strong></span>
+        </a>
+      </div>
+
+      <div class="container header__intro">
+        <div class="header__text">
+          <h1 class="header__title">Sua agenda</h1>
+          <p class="header__subtitle" id="schedule-subtitle">
+            Aqui você pode ver todos os clientes e serviços agendados para hoje.
+          </p>
+        </div>
+
+        <div class="header__actions">
+          <div class="date-filter">
+            <label class="sr-only" for="schedule-date">Data da agenda</label>
+            <span class="icon icon--calendar date-filter__icon" aria-hidden="true"></span>
+            <input class="input date-filter__input" type="date" id="schedule-date" name="schedule-date" />
+          </div>
+
+          <button class="button button--primary new-appointment" type="button" id="open-modal">
+            <span class="icon icon--plus" aria-hidden="true"></span>
+            Novo agendamento
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <p class="sr-only" id="announcer" aria-live="polite"></p>
+
+    <main class="container schedule" id="schedule">
+      <section class="period" data-period="morning" aria-labelledby="period-morning-title">
+        <header class="period__header">
+          <span class="period__icon" aria-hidden="true"><span class="icon icon--sunrise"></span></span>
+          <h2 class="period__title" id="period-morning-title">Manhã</h2>
+          <span class="period__range">09h–12h</span>
+        </header>
+        <ul class="period__list" data-period-list="morning"></ul>
+      </section>
+
+      <section class="period" data-period="afternoon" aria-labelledby="period-afternoon-title">
+        <header class="period__header">
+          <span class="period__icon" aria-hidden="true"><span class="icon icon--sun"></span></span>
+          <h2 class="period__title" id="period-afternoon-title">Tarde</h2>
+          <span class="period__range">13h–18h</span>
+        </header>
+        <ul class="period__list" data-period-list="afternoon"></ul>
+      </section>
+
+      <section class="period" data-period="night" aria-labelledby="period-night-title">
+        <header class="period__header">
+          <span class="period__icon" aria-hidden="true"><span class="icon icon--moon"></span></span>
+          <h2 class="period__title" id="period-night-title">Noite</h2>
+          <span class="period__range">19h–21h</span>
+        </header>
+        <ul class="period__list" data-period-list="night"></ul>
+      </section>
+    </main>
+
+    <dialog class="modal" id="appointment-modal" aria-labelledby="modal-title" aria-describedby="modal-description">
+      <div class="modal__content">
+        <header class="modal__header">
+          <div>
+            <h2 class="modal__title" id="modal-title">Agende um atendimento</h2>
+            <p class="modal__description" id="modal-description">
+              Preencha os dados do cliente para realizar o agendamento.
+            </p>
+          </div>
+          <button class="modal__close" type="button" aria-label="Fechar" data-modal-close>
+            <span class="icon icon--close" aria-hidden="true"></span>
+          </button>
+        </header>
+
+        <form class="form" id="appointment-form" novalidate>
+          <div class="field">
+            <label class="field__label" for="tutor">Nome do tutor</label>
+            <input class="input" type="text" id="tutor" name="tutor" autocomplete="name" maxlength="60" placeholder="Helena Souza" required />
+            <p class="field__error" id="tutor-error"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="pet">Nome do pet</label>
+            <input class="input" type="text" id="pet" name="pet" autocomplete="off" maxlength="40" placeholder="Thor" required />
+            <p class="field__error" id="pet-error"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="phone">Telefone</label>
+            <input class="input" type="tel" id="phone" name="phone" autocomplete="tel-national" inputmode="numeric" maxlength="16" placeholder="(00) 0 0000-0000" required />
+            <p class="field__error" id="phone-error"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="service">Descrição do serviço</label>
+            <textarea class="input input--textarea" id="service" name="service" rows="3" maxlength="200" placeholder="Banho e tosa, corte de unhas…" required></textarea>
+            <p class="field__error" id="service-error"></p>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label class="field__label" for="date">Data</label>
+              <input class="input" type="date" id="date" name="date" required />
+              <p class="field__error" id="date-error"></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="time">Hora</label>
+              <div class="select">
+                <select class="input select__control" id="time" name="time" required>
+                  <option value="">Selecione</option>
+                </select>
+                <span class="icon icon--chevron select__arrow" aria-hidden="true"></span>
+              </div>
+              <p class="field__error" id="time-error"></p>
+            </div>
+          </div>
+
+          <button class="button button--primary button--full form__submit" type="submit">Agendar</button>
+        </form>
+      </div>
+    </dialog>
+  </body>
+</html>

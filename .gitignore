@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Logs e temporários
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Instruções locais usadas para gerar o projeto
+PROMPT.md

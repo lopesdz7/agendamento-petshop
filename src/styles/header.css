@@ -1,0 +1,129 @@
+.header {
+  padding-bottom: var(--space-6);
+}
+
+.header__bar {
+  display: flex;
+  align-items: center;
+  min-height: 4rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.brand__name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.01em;
+}
+
+.brand__name strong {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent);
+}
+
+.header__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-top: var(--space-8);
+}
+
+.header__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.header__subtitle {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  max-width: 46ch;
+}
+
+.header__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.date-filter {
+  position: relative;
+  flex: 1;
+  color: var(--color-accent);
+}
+
+.date-filter__icon {
+  position: absolute;
+  top: 50%;
+  left: var(--space-4);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.date-filter__input {
+  padding-left: calc(var(--space-4) + 1.25rem + var(--space-3));
+  background: var(--color-surface);
+}
+
+/* Mobile: botão fixo embaixo, ocupando a largura toda */
+.new-appointment {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 3.25rem;
+  margin: var(--space-4);
+  margin-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  box-shadow: 0 -12px 32px var(--color-bg), 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+@media (min-width: 768px) {
+  .header__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .header__subtitle {
+    font-size: var(--font-size-md);
+  }
+
+  .header__intro {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: var(--space-12);
+  }
+
+  .header__actions {
+    flex-shrink: 0;
+  }
+
+  .date-filter {
+    width: 13rem;
+    flex: none;
+  }
+
+  .new-appointment {
+    position: static;
+    margin: 0;
+    box-shadow: none;
+  }
+}
